@@ -1,0 +1,35 @@
+version: '3'
+services:
+  nest-postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=rahasia
+      - POSTGRES_DB=belajar
+    volumes:
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks: 
+       - todo
+  nest-backend:
+    build: .
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    ports:
+      - 8000:8000
+    environment:
+      - DB_USER=postgres
+      - DB_PASSWORD=rahasia
+      - DB_HOST=todo-postgres
+      - DB_PORT=5432
+      - DB_DATABASE_DEVELOPMENT=belajar
+    networks: 
+       - todo
+    # depends_on:
+    #   - todo_postgres
+networks: 
+       todo:
+
+    
