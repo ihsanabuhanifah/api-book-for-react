@@ -17,15 +17,17 @@ services:
     volumes:
       - ./:/app
       - /app/node_modules
-      
+
     ports:
       - 8000:8000
-    environment:
-      - DB_USER=postgres
-      - DB_PASSWORD=rahasia
-      - DB_HOST=todo-postgres
-      - DB_PORT=5432
-      - DB_DATABASE_DEVELOPMENT=belajar
+    # environment:
+    #   - DB_USERNAME=postgres
+    #   - DB_PASSWORD=rahasia
+    #   - DB_HOST=nest-learn-nest-postgres-1
+    #   - DB_PORT=5432
+    #   - DB_DATABASE=belajar
+    env_file:
+      - ./src/common/envs/.env
     networks: 
        - todo
     # depends_on:

@@ -44,6 +44,7 @@ export class BooksController {
     @Param('id', UUIDValidationPipe) id: string,
     @Body() payload: CreateBookDto,
   ): Promise<any> {
+    return process.env.DB_HOST;
     return await this.booksService.updateBook(id, payload);
   }
 
