@@ -1,5 +1,5 @@
-import { Type } from 'class-transformer';
-import { IsInt, IsOptional } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import { IsInt, IsOptional, IsBoolean } from 'class-validator';
 
 export class FilterBookDto {
   @IsOptional()
@@ -17,4 +17,12 @@ export class FilterBookDto {
   @IsInt()
   @Type(() => Number)
   max_year: number;
+  @IsOptional()
+  @IsBoolean()
+  @Transform(({ value }) => {
+    if (value === 'true') return true;
+    if (value === 'false') return false;
+    return value;
+  })
+  isBestSeller: boolean;
 }

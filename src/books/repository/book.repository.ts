@@ -1,21 +1,27 @@
 import { InternalServerErrorException } from '@nestjs/common';
 import { CustomRepository } from 'src/database/typeorm-ex.decorator';
-import { EntityRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateBookDto } from '../dto/create-book.dto';
 import { FilterBookDto } from '../dto/filter-book.dto';
-import { UpdateBookDto } from '../dto/update-book.dto';
+
 import { Book } from '../entity/book.entity';
 
 @CustomRepository(Book)
 export class BookRepository extends Repository<Book> {
   async getBooks(filter: FilterBookDto): Promise<Book[]> {
-    const { title, author, category, min_year, max_year } = filter;
+    const { title, author, category, min_year, max_year, isBestSeller } =
+      filter;
 
     const query = this.createQueryBuilder('book');
 
     if (title) {
       query.andWhere('lower(book.title) LIKE :title', {
         title: `%${title.toLowerCase()}%`,
+      });
+    }
+    if (isBestSeller) {
+      query.andWhere('book.isBestSeller =  :isBestSeller', {
+        isBestSeller,
       });
     }
 
@@ -43,13 +49,14 @@ export class BookRepository extends Repository<Book> {
   }
 
   async createBook(createBookDto: CreateBookDto): Promise<void> {
-    const { title, author, category, year } = createBookDto;
+    const { title, author, category, year, isBestSeller } = createBookDto;
 
     const book = this.create();
     book.title = title;
     book.author = author;
     book.category = category;
     book.year = year;
+    book.isBestSeller = isBestSeller;
 
     try {
       await book.save();

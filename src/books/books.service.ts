@@ -32,12 +32,13 @@ export class BooksService {
   }
 
   async updateBook(id: string, updateBookDto: UpdateBookDto) {
-    const { title, author, category, year } = updateBookDto;
+    const { title, author, category, year, isBestSeller } = updateBookDto;
     const book = await this.getBookById(id);
     book.title = title;
     book.author = author;
     book.category = category;
     book.year = year;
+    book.isBestSeller = isBestSeller;
 
     await book.save();
   }

@@ -12,4 +12,9 @@ export class Book extends BaseEntity {
   author: string;
   @Column()
   year: number;
+  @Column({
+    type: 'bool',
+    default: false,
+  })
+  isBestSeller: boolean;
 }

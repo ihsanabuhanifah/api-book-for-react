@@ -28,14 +28,20 @@ export class BooksController {
   }
 
   @Get('/:id')
-  async getBookById(@Param('id', UUIDValidationPipe) id: any): Promise<Book> {
-    return this.booksService.getBookById(id);
+  async getBookById(@Param('id', UUIDValidationPipe) id: any): Promise<any> {
+    const buku = await this.booksService.getBookById(id);
+    return {
+      status: 'Success',
+      message: 'Buku Ditemukan',
+      buku: buku,
+    };
   }
   @Post()
   async createBook(@Body() payload: CreateBookDto): Promise<any> {
     await this.booksService.createBook(payload);
     return {
-      msg: 'Success',
+      status: 'Success',
+      message: 'Buku Berhasil Disimpan',
     };
   }
 
@@ -44,12 +50,19 @@ export class BooksController {
     @Param('id', UUIDValidationPipe) id: string,
     @Body() payload: CreateBookDto,
   ): Promise<any> {
-    return process.env.DB_HOST;
-    return await this.booksService.updateBook(id, payload);
+    await this.booksService.updateBook(id, payload);
+    return {
+      status: 'Success',
+      message: 'Buku Berhasil Diperbaharui',
+    };
   }
 
   @Delete('/delete/:id')
-  async deleteBook(@Param('id', UUIDValidationPipe) id: string): Promise<void> {
-    return this.booksService.deleteBook(id);
+  async deleteBook(@Param('id', UUIDValidationPipe) id: string): Promise<any> {
+    await this.booksService.deleteBook(id);
+    return {
+      status: 'Success',
+      message: 'Buku Berhasil Dihapus',
+    };
   }
 }

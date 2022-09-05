@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsInt, IsNotEmpty } from 'class-validator';
+import { IsBoolean, IsInt, isNotEmpty, IsNotEmpty } from 'class-validator';
 
 export class CreateBookDto {
   @IsNotEmpty()
@@ -8,6 +8,8 @@ export class CreateBookDto {
   author: string;
   @IsNotEmpty()
   category: string;
+  @IsBoolean()
+  isBestSeller: boolean;
   @IsNotEmpty()
   @IsInt()
   @Type(() => Number)
